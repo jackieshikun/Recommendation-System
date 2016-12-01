@@ -14,7 +14,7 @@ public class Recommender {
 	public static final int MAX_RECOMMEND_AMOUNT = 10;
 	
 	public static void main(String[] args){
-		
+		/*
 		User user = null;
 		while(user == null){
 			System.out.println("1:login,2:signup,else exit");
@@ -26,7 +26,7 @@ public class Recommender {
 				default: System.exit(0);
 			}
 		}
-		
+		*/
 		//UserOperation.signup();
 		ImportData data = new ImportData();
 		System.out.println("loading system success");

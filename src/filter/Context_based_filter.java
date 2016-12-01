@@ -47,7 +47,8 @@ public class Context_based_filter {
 		return weight;
 	}
 	private BookVector[] knnSearch(HashMap<String, Double> userProfile, int amount){
-		PriorityQueue<KNNBookVector> pq = new PriorityQueue<KNNBookVector>(amount,new KNNBookCompare());
+		PriorityQueue<KNNBookVector> pq = new PriorityQueue<KNNBookVector>(amount,
+				new KNNBookCompare());
 		BookVector [] books = new BookVector[amount];
 		for(BookVector book: bookMap.values()){
 			pq.add(new KNNBookVector(calSimilarity(userProfile,book),book));
@@ -57,7 +58,7 @@ public class Context_based_filter {
 		for(int i = 0; i < books.length;i++){
 			KNNBookVector rBook = pq.poll();
 			books[i] = rBook.getBookVector();
-			System.out.println("Rating: " + rBook.getRating() + "  title:" + books[i].getTitle() + "author: " + books[i].getAuthor());
+			//System.out.println("Rating: " + rBook.getRating() + "  title:" + books[i].getTitle() + "author: " + books[i].getAuthor());
 		}
 		
 		return books;

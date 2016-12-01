@@ -19,14 +19,14 @@ public final class ImportData {
 	private HashMap<Integer,UserVector> userMap;
 	private HashMap<String,BookVector> bookMap;
 	private static final String NUM_PATTERN = "^\\d*$";
-	private static final String STRING_PATTERN = "^[0-9a-zA-Z,./-\\s]*$";
+	private static final String STRING_PATTERN = "^[^']*$";
 	public ImportData(){
 		userMap = new HashMap<Integer, UserVector>();
 		bookMap = new HashMap<String, BookVector>();
 		//insertUser2DB();
-		//insertBook2DB();
-		constructUserVector();
-		constructBookVector();
+		insertBook2DB();
+		//constructUserVector();
+		//constructBookVector();
 		
 	}
 	public HashMap<Integer, UserVector> getUserMap(){
@@ -188,25 +188,29 @@ public final class ImportData {
 			String line = null;
 			String ISBN,bookTitle,author,publisher;
 			int year,genre;
-			
+			int i =0;
 			while((line = reader.readLine()) != null){
 				String [] columns = line.split(";");
+				System.out.println("i:"+ i);
+				i++;
 				if(columns.length >= 6){
 					Matcher num_match1 = is_num.matcher(columns[3]);
 					Matcher num_match2 = is_num.matcher(columns[5]);
+					/*
 					Matcher string_match1 = is_string.matcher(columns[0]);
-					Matcher string_match2 = is_string.matcher(columns[1]);
-					Matcher string_match3 = is_string.matcher(columns[2]);
+					Matcher string_match2 = is_string.matcher(columns[1].replace('\'', ' '));
+					Matcher string_match3 = is_string.matcher(columns[2].replace('\'', ' '));
 					Matcher string_match4 = is_string.matcher(columns[4]);
-					if(num_match1.find() && num_match2.find() && string_match1.find() &&string_match2.find() && string_match3.find() && string_match4.find()){
+					*/
+					if(num_match1.find() && num_match2.find()){
 						ISBN = columns[0].substring(1,columns[0].length()-1);
-						bookTitle = columns[1].substring(1,columns[1].length()-1);
-						author = columns[2].substring(1,columns[2].length()-1);
+						bookTitle = columns[1].substring(1,columns[1].length()-1).replace('\'', ' ');
+						author = columns[2].substring(1,columns[2].length()-1).replace('\'', ' ');
 						year = Integer.parseInt(columns[3]);
-						publisher = columns[4].substring(1, columns[4].length()-1);
+						publisher = columns[4].substring(1, columns[4].length()-1).replace('\'', ' ');
 						genre = Integer.parseInt(columns[5]);
 						Statement stmt = connect.createStatement();
-						System.out.println("insert into book(ISBN,bookTitle,author,year,publisher,genre) values('"+ISBN + "','"+bookTitle+"','" + author + "'," + year+",'"+publisher + "'," +genre + ") ;");
+						//System.out.println("insert into book(ISBN,bookTitle,author,year,publisher,genre) values('"+ISBN + "','"+bookTitle+"','" + author + "'," + year+",'"+publisher + "'," +genre + ") ;");
 					    stmt.executeUpdate("insert into book(ISBN,bookTitle,author,year,publisher,genre) values('"+ISBN + "','"+bookTitle+"','" + author + "'," + year+",'"+publisher + "'," +genre + ") ;");
 					}
 					
